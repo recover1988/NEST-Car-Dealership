@@ -325,6 +325,19 @@ En este caso aplicamos el `ParseIntPipe` y este pipe nos devulve un error sino e
 
 Este error se puede personalizar. El `pipe` ayuda a verificar si no es un numero y envia error automaticamente.
 
+#### ParseUUIDPipe
+
+Este pipe se puede instanciar y asi poder configurar algunas opciones como la version, mensaje de error, estado, etc.
+
+```
+  @Get(':id') // ':id/:brands'
+  getCarById(@Param('id', new ParseUUIDPipe({ version: '4' })) id: string) {
+    console.log(id);
+    // throw new Error('Auxilio');
+    return this.carsService.findOneById(id);
+  }
+```
+
 ## Excepcion Zone
 
 Nest controlla la excepciones automaticamente para que no se rompa.

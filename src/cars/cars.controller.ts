@@ -4,7 +4,6 @@ import {
   Delete,
   Get,
   Param,
-  ParseIntPipe,
   ParseUUIDPipe,
   Patch,
   Post,
@@ -18,7 +17,7 @@ export class CarsController {
     return this.carsService.findAll();
   }
   @Get(':id') // ':id/:brands'
-  getCarById(@Param('id', ParseUUIDPipe) id: string) {
+  getCarById(@Param('id', new ParseUUIDPipe({ version: '4' })) id: string) {
     console.log(id);
     // throw new Error('Auxilio');
     return this.carsService.findOneById(id);
@@ -32,7 +31,7 @@ export class CarsController {
     };
   }
   @Patch(':id')
-  updateCar(@Body() body: any, @Param('id', ParseIntPipe) id: number) {
+  updateCar(@Body() body: any, @Param('id', ParseUUIDPipe) id: string) {
     return {
       id,
       ok: true,
@@ -41,7 +40,7 @@ export class CarsController {
     };
   }
   @Delete(':id')
-  deleteCar(@Param('id', ParseIntPipe) id: number) {
+  deleteCar(@Param('id', ParseUUIDPipe) id: string) {
     return {
       id,
       ok: true,
