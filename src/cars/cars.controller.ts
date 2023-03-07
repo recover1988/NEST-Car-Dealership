@@ -1,25 +1,16 @@
 import { Controller, Get, Param } from '@nestjs/common';
+import { CarsService } from './cars.service';
 
 @Controller('cars')
 export class CarsController {
-  private cars = ['Toyota', 'Honda', 'Ford'];
-
   @Get()
   getAllCars() {
-    return this.cars;
+    return this.carsService.findAll();
   }
   @Get(':id') // ':id/:brands'
   getCarById(@Param('id') id) {
     console.log(id);
-    if (!(Number(id) >= 0 && Number(id) < this.cars.length)) {
-      return {
-        msg: `El ${id} no es un elemento valido`,
-      };
-    }
-
-    return {
-      id,
-      car: this.cars[Number(id)],
-    };
+    return this.carsService.findOneById(Number(id));
   }
+  constructor(private readonly carsService: CarsService) {}
 }

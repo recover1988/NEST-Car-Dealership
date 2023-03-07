@@ -190,6 +190,37 @@ export class CarsController {
 
 Por defecto cualquier segmento del url, query que venga por url es un `string`.
 
+## Servicios
+
+Los servicios alojan la logica de negocio de tal manera que sea reutilizable mediante inyeccion de dependencias.
+Ej: PeliculasService para todo lo relacionado a obtener, grabar, actualizar o eliminar informacion de peliculas.
+
+Todos los servicios son `providers`, no todos los providers son servicios.
+
+### Crear servicio
+
+```
+nest g s cars --no-spec
+```
+
+Este comando genera lo siguiente:
+
+```
+CREATE src/cars/cars.service.ts (88 bytes)
+UPDATE src/cars/cars.module.ts (241 bytes)
+```
+
+Crea un archivo y actualiza el modulo mas cercano.
+
+```
+import { Injectable } from '@nestjs/common';
+
+@Injectable()
+export class CarsService {}
+```
+
+Es una clase que tiene el decorador `@Injectable()` que permite ser usado en componentes cuando se lo registra.
+
 ## Comandos del CLI
 
 | Name        | Alias | Description                                                                                         |
