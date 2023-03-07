@@ -22,6 +22,45 @@
   <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
   [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
+## Modulos
+
+Es un archivo que agrupa y desacopla un conjunto de funcionalidades especificas por dominio.
+Ej: `auth.module.ts`, encargado de todo los relacionado a la autenticacion.
+Modulos que agrupen funcionalidades como peticiones, servicios, decoradores, etc, todo los relacionado a una funcionalidad especifica.
+Es una clase con decorador que indica cuales son sus importaciones, controladores, proveedores, exportaciones.
+
+```
+import { Module } from '@nestjs/common';
+
+@Module({
+  imports: [],
+  controllers: [],
+  providers: [],
+  exports: [],
+})
+export class AppModule {}
+
+```
+
+## Main
+
+Es la primera funcion que se ejecuta y el punto de entrada a la aplicacion.
+Cuando se ejecuta el comando de inicio se ejecuta esta funcion.
+El puerto por defecto es el `3000`.
+Esta funcion sirve lo que esta definido en el `AppModule`.
+
+```
+import { NestFactory } from '@nestjs/core';
+import { AppModule } from './app.module';
+
+async function bootstrap() {
+  const app = await NestFactory.create(AppModule);
+  await app.listen(3000);
+}
+bootstrap();
+
+```
+
 ## Description
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
