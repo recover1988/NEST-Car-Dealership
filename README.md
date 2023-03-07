@@ -220,6 +220,74 @@ export class CarsService {}
 ```
 
 Es una clase que tiene el decorador `@Injectable()` que permite ser usado en componentes cuando se lo registra.
+Para inyecta el servicio en el controlador debemos declararlo en el constructor:
+
+```
+constructor(private readonly carsService: CarsService) {}
+```
+
+## Pipes
+
+Transforma la data recibida en requests, para asegurar un tipo, valor o instancia de un objeto.
+Ej: Transforma a numero, validacions, etc.
+
+### Pipes integrados por defecto
+
+```
+ValidationPipe
+ParseBoolPipe
+ParseFloatPipe
+ParseIntPipe
+ParseArrayPipe
+ParseUUIDPipe
+```
+
+Lo parse transforma alguna informacion.
+Para usar el `pipe` simplement lo enviamos como otro parametro:
+
+```
+  @Get(':id') // ':id/:brands'
+  getCarById(@Param('id', ParseIntPipe) id: number) {
+    console.log(id);
+    return this.carsService.findOneById(Number(id));
+  }
+```
+
+En este caso aplicamos el `ParseIntPipe` y este pipe nos devulve un error sino es un `id` de tipo `number`:
+
+```
+{
+  "statusCode": 400,
+  "message": "Validation failed (numeric string is expected)",
+  "error": "Bad Request"
+}
+```
+
+Este error se puede personalizar. El `pipe` ayuda a verificar si no es un numero y envia error automaticamente.
+
+## Excepcion Zone
+
+Nest controlla la excepciones automaticamente para que no se rompa.
+Si podemos el siguiente codigo:
+
+```
+  @Get(':id')
+  getCarById(@Param('id', ParseIntPipe) id: number) {
+    console.log(id);
+    throw new Error('Auxilio');
+  }
+```
+
+Nest maneja la excepcion de la siguiente forma:
+
+```
+{
+  "statusCode": 500,
+  "message": "Internal server error"
+}
+```
+
+Evitando que la app se rompa.
 
 ## Comandos del CLI
 
