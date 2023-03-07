@@ -289,6 +289,46 @@ Nest maneja la excepcion de la siguiente forma:
 
 Evitando que la app se rompa.
 
+## Exception Filters
+
+Maneja los errores de codigo en mensajes de respuesta http. Usualmente Nest ya incluye todos los casos de uso comunes, pero se pueden expandir basado en las necesidades.
+Estos son los mas usados pero hay más.
+
+```
+BadRequestException
+NotFoundException
+RequestTimeoutException
+PayloadTooLargeException
+UnauthorizedException
+ForbiddenException
+GoneException
+InternalServerErrorException
+```
+
+Para usarlo en el servicio agregamos la siguiente validacion:
+
+```
+  public findOneById(id: number) {
+    const car = this.cars.find((car) => car.id === id);
+
+    if (!car) {
+      throw new NotFoundException(`Car with id ${id} no found`);
+    }
+    return car;
+  }
+```
+
+Podemos personalizar el mensaje enviadolo si lo enviamos como un parametro.
+Si el `car` o existe Nest nos envia la siguiente excepcion:
+
+```
+{
+  "statusCode": 404,
+  "message": "Car with id 4 no found",
+  "error": "Not Found"
+}
+```
+
 ## Comandos del CLI
 
 | Name        | Alias | Description                                                                                         |
