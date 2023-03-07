@@ -22,6 +22,14 @@
   <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
   [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
+## Quitar errores de prettier
+
+```
+npm remove prettier
+```
+
+cmd + shift + P -> buscar Developer:Reload Window
+
 ## Modulos
 
 Es un archivo que agrupa y desacopla un conjunto de funcionalidades especificas por dominio.
@@ -136,6 +144,51 @@ Responde:
 ```
 
 que aun no tiene nada.
+
+### Estraer informacion de la solicitud (Request)
+
+Hay varias maneras de obtener la info de la request:
+
+```
+# Obtener parametros/segmentos
+@Param('id')
+
+# Obtener el bidy de la peticion
+@Body()
+
+# Obtener los parametros de query(siempre opcionales)
+@Query()
+
+#Obtener respose(Express/Fastify)
+#Importar desde express/fastify
+@Res()
+```
+
+Lo podemos usar de la siguiente forma:
+
+```
+import { Controller, Get, Param } from '@nestjs/common';
+
+@Controller('cars')
+export class CarsController {
+  private cars = ['Toyota', 'Honda', 'Ford'];
+
+  @Get()
+  getAllCars() {
+    return this.cars;
+  }
+  @Get(':id') // ':id/:brands'
+  getCarById(@Param('id') id) {  <-- Aca obtenemos el id por params
+    console.log(id);
+    return {
+      id,
+    };
+  }
+}
+
+```
+
+Por defecto cualquier segmento del url, query que venga por url es un `string`.
 
 ## Comandos del CLI
 
