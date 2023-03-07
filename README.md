@@ -42,6 +42,21 @@ export class AppModule {}
 
 ```
 
+### Crear un modulo
+
+```
+nest g mo cars
+```
+
+Este comando crea los siguientes archivos en el root.
+
+```
+CREATE src/cars/cars.module.ts (81 bytes)
+UPDATE src/app.module.ts (206 bytes)
+```
+
+Crea un archivo y actualiza la importacion en el module del root.
+
 ## Main
 
 Es la primera funcion que se ejecuta y el punto de entrada a la aplicacion.
@@ -58,6 +73,89 @@ async function bootstrap() {
   await app.listen(3000);
 }
 bootstrap();
+
+```
+
+Para levantar el servidor se escribe el comando `nest run start:dev`
+
+## Controladores
+
+Son funciones que controlan rutas, son los encargados de escuchar las solicitud y emitir la respuesta.
+Ej: Rutas CRUD.
+Generar controlador:
+
+```
+nest g co <path/nombre>
+```
+
+### Crear controlador
+
+Usamos el siguiente comando:
+
+```
+nest g co cars
+```
+
+que nos genera lo siguiente:
+
+```
+CREATE src/cars/cars.controller.ts (97 bytes)
+CREATE src/cars/cars.controller.spec.ts (478 bytes)
+UPDATE src/cars/cars.module.ts (166 bytes)
+```
+
+Crea un controlador, un archivos de pruebas y actualiza el modulo mas cercano.
+
+## Comandos del CLI
+
+| Name        | Alias | Description                                                                                         |
+| ----------- | :---: | --------------------------------------------------------------------------------------------------- |
+| app         |       | Generate a new application within a monorepo (converting to monorepo if it's a standard structure). |
+| library     |  lib  | Generate a new library within a monorepo (converting to monorepo if it's a standard structure).     |
+| class       |  cl   | Generate a new class.                                                                               |
+| controller  |  co   | Generate a controller declaration.                                                                  |
+| decorator   |   d   | Generate a custom decorator.                                                                        |
+| filter      |   f   | Generate a filter declaration.                                                                      |
+| gateway     |  ga   | Generate a gateway declaration.                                                                     |
+| guard       |  gu   | Generate a guard declaration.                                                                       |
+| interface   |  itf  | Generate an interface.                                                                              |
+| interceptor |  itc  | Generate an interceptor declaration.                                                                |
+| middleware  |  mi   | Generate a middleware declaration.                                                                  |
+| module      |  mo   | Generate a module declaration.                                                                      |
+| pipe        |  pi   | Generate a pipe declaration.                                                                        |
+| provider    |  pr   | Generate a provider declaration.                                                                    |
+| resolver    |   r   | Generate a resolver declaration.                                                                    |
+| resource    |  res  | Generate a new CRUD resource. See the CRUD (resource) generator for more details.                   |
+| service     |   s   | Generate a service declaration.                                                                     |
+
+Options
+| Option |Description|
+|----------|-------|
+| --dry-run | Reports changes that would be made, but does not change the filesystem. |
+| | Alias: -d |
+| --project | [project] Project that element should be added to. |
+| | Alias: -p |
+| --flat | Do not generate a folder for the element. |
+| --collection [collectionName] | Specify schematics collection. Use package name of installed npm package containing schematic. |
+| | Alias: -c |
+| --spec | Enforce spec files generation (default) |
+| --no-spec | Disable spec files generation |
+
+## Estructura de modulo recomendada
+
+```
+/src
+    |_/common
+             |_ /decorators
+             |_ /dtos
+             |_ /filters
+             |_ /guards
+             |_ /interceptors
+             |_ /middleware
+             |_ /pipes
+             |_ common.controller.ts
+             |_ common.module.ts
+             |_ common.service.ts
 
 ```
 
