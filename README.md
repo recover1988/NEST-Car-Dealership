@@ -105,6 +105,37 @@ UPDATE src/cars/cars.module.ts (166 bytes)
 ```
 
 Crea un controlador, un archivos de pruebas y actualiza el modulo mas cercano.
+El controlador que creamos le podemos agregar con el decorador `@Get()` una respuesta:
+
+```
+import { Controller, Get } from '@nestjs/common';
+
+@Controller('cars')
+export class CarsController {
+  @Get()
+  getAllCars() {
+    return ['Toyota', 'Honda', 'Ford'];
+  }
+}
+
+
+```
+
+Nos habilita un `endpoint` que se encuentra en el siguiente path:
+
+```
+http://localhost:3000/cars
+
+Responde:
+
+[
+  "Toyota",
+  "Honda",
+  "Ford"
+]
+```
+
+que aun no tiene nada.
 
 ## Comandos del CLI
 
