@@ -402,6 +402,12 @@ Si el `car` o existe Nest nos envia la siguiente excepcion:
 }
 ```
 
+## DTO (Data Transfer Object)
+Es una clase que ayuda a que la informacion tenga las propiedades que necsitamos.
+Asegurar como fluye la data en la aplicacion.
+Las propiedades que espera y metodos, reglas de validacion automatica.
+Crear una clase y es como esperamos que la data se mueva en la aplicacion.
+
 ## Comandos del CLI
 
 | Name        | Alias | Description                                                                                         |
