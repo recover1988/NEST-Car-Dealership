@@ -22,7 +22,16 @@
   <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
   [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+[Nest](https://github.com/nestjs/nest) framework TypeScript starter
+repository.
+
+# Car Dealship
+
+Populate DB
+
+```
+http://localhost:3000/seed
+```
 
 ## Installation
 
@@ -761,3 +770,5 @@ Esto crea una ruta `seed` que sirve para llenar la base de datos con nuestra inf
 Este seed solo necesita una ruta GET en el controlador, ademas crearemos un servicio con la funcion para llenar la base de datos.
 
 En la carpeta data tendremos los datos que queremos llenar en la base de datos.
+
+Si queremos usar el servicio de otro componente tenemos que exportar lo que queremos que se use en otro lado como el servicio, y del lado que lo quiera usar tenemos que importar el modulo.
