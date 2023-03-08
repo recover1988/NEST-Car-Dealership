@@ -1,7 +1,9 @@
+/* eslint-disable prettier/prettier */
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Car } from './interfaces/car.interface';
 import { v4 as uuid } from 'uuid';
-import { CreateCarDto } from './dto/create-car.dto';
+import { CreateCarDto, UpdateCarDto } from './dto';
+
 @Injectable()
 export class CarsService {
   private cars: Car[] = [
@@ -40,5 +42,9 @@ export class CarsService {
     };
     this.cars.push(car);
     return car;
+  }
+  public update(id: string, updateCarDto: UpdateCarDto){
+    
+    return
   }
 }

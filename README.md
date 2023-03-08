@@ -646,3 +646,32 @@ La opcion `forbidNonWhitelisted: true` muesta un error si se envian datos que no
   "error": "Bad Request"
 }
 ```
+
+## Para update
+
+Es mejor crear un nuevo `DTO` que tenga las propiedades y metodos que necesitemos para el update como:
+
+```
+// update-car.dto.ts
+
+import { IsOptional, IsString, IsUUID, MinLength } from "class-validator";
+
+export class UpdateCarDto {
+
+    @IsString()
+    @IsUUID()
+    @IsOptional()
+    readonly id?: string;
+
+    @IsString({ message: 'The brand most be a cool string' })
+    @IsOptional()
+    readonly brand?: string;
+
+    @IsString()
+    @MinLength(3)
+    @IsOptional()
+    readonly model?: string;
+}
+```
+
+En donde las propiedades pueden ser opcionales y ademas agregamos otra como el id. Se pone signo de `?` para indicarle tambien a typescript que son opcionales.

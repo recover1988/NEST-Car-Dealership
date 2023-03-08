@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import {
   Body,
   Controller,
@@ -10,6 +11,7 @@ import {
 } from '@nestjs/common';
 import { CarsService } from './cars.service';
 import { CreateCarDto } from './dto/create-car.dto';
+import { UpdateCarDto } from './dto/update-car.dto';
 
 @Controller('cars')
 export class CarsController {
@@ -28,12 +30,12 @@ export class CarsController {
     return this.carsService.create(createCarDto);
   }
   @Patch(':id')
-  updateCar(@Body() body: any, @Param('id', ParseUUIDPipe) id: string) {
+  updateCar(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() updateCarDto: UpdateCarDto
+  ) {
     return {
-      id,
-      ok: true,
-      method: 'Patch',
-      body,
+      updateCarDto,
     };
   }
   @Delete(':id')
@@ -45,5 +47,5 @@ export class CarsController {
     };
   }
 
-  constructor(private readonly carsService: CarsService) {}
+  constructor(private readonly carsService: CarsService) { }
 }
