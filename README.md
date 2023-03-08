@@ -739,3 +739,18 @@ Genera un nuevo CRUD. Que nos simplifica la vida ademas en los DTO el update se 
 
 Es una abstraccion de como luce en tabla. El nombre de la clase es el nombre que va a tener la tabla cuando lo conectemos con una bse de datos.
 
+# Generar un Seed
+```
+nest g res seed --no-spec
+
+genera:
+? What transport layer do you use? REST API
+? Would you like to generate CRUD entry points? Yes
+CREATE src/seed/seed.controller.ts (883 bytes)
+CREATE src/seed/seed.module.ts (240 bytes)
+CREATE src/seed/seed.service.ts (607 bytes)      
+CREATE src/seed/dto/create-seed.dto.ts (30 bytes)
+CREATE src/seed/dto/update-seed.dto.ts (169 bytes)
+CREATE src/seed/entities/seed.entity.ts (21 bytes)
+UPDATE src/app.module.ts (336 bytes)
+```
