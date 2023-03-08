@@ -675,3 +675,41 @@ export class UpdateCarDto {
 ```
 
 En donde las propiedades pueden ser opcionales y ademas agregamos otra como el id. Se pone signo de `?` para indicarle tambien a typescript que son opcionales.
+
+La funcion para update quedaria asi:
+
+```
+  public update(id: string, updateCarDto: UpdateCarDto) {
+    let carDB = this.findOneById(id);
+
+    if (updateCarDto.id && updateCarDto.id !== id) {
+      throw new BadRequestException('Car id is not valid')
+    }
+
+    this.cars = this.cars.map(car => {
+      if (car.id === id) {
+        carDB = {
+          ...carDB,
+          ...updateCarDto,
+          id,
+        }
+        return carDB;
+      }
+      return car;
+    })
+    return carDB;
+  }
+```
+
+Esto quedaria mucho mas chico si usaramos una base de datos.
+
+
+## Delete
+```
+  public delete(id: string) {
+    this.findOneById(id);
+
+    this.cars = this.cars.filter(car => car.id !== id);
+
+  }
+```

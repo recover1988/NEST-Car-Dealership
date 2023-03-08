@@ -34,17 +34,11 @@ export class CarsController {
     @Param('id', ParseUUIDPipe) id: string,
     @Body() updateCarDto: UpdateCarDto
   ) {
-    return {
-      updateCarDto,
-    };
+    return this.carsService.update(id, updateCarDto);
   }
   @Delete(':id')
   deleteCar(@Param('id', ParseUUIDPipe) id: string) {
-    return {
-      id,
-      ok: true,
-      method: 'Delete',
-    };
+    return this.carsService.delete(id);
   }
 
   constructor(private readonly carsService: CarsService) { }
