@@ -703,8 +703,8 @@ La funcion para update quedaria asi:
 
 Esto quedaria mucho mas chico si usaramos una base de datos.
 
-
 ## Delete
+
 ```
   public delete(id: string) {
     this.findOneById(id);
@@ -713,3 +713,29 @@ Esto quedaria mucho mas chico si usaramos una base de datos.
 
   }
 ```
+
+# Crear todo un Recurso
+
+```
+nest g resource brands --no-spec
+
+genera:
+? What transport layer do you use? REST API
+? Would you like to generate CRUD entry points? Yes
+CREATE src/brands/brands.controller.ts (915 bytes)
+CREATE src/brands/brands.module.ts (254 bytes)
+CREATE src/brands/brands.service.ts (623 bytes)
+CREATE src/brands/dto/create-brand.dto.ts (31 bytes)
+CREATE src/brands/dto/update-brand.dto.ts (173 bytes)
+CREATE src/brands/entities/brand.entity.ts (22 bytes)
+UPDATE package.json (2072 bytes)
+UPDATE src/app.module.ts (275 bytes)
+✔ Packages installed successfully.
+```
+
+Genera un nuevo CRUD. Que nos simplifica la vida ademas en los DTO el update se extiende del create, lo que ayuda a tener todos las propiedades y metodos del create en el update y manejarlas como queramos.
+
+### Entities
+
+Es una abstraccion de como luce en tabla. El nombre de la clase es el nombre que va a tener la tabla cuando lo conectemos con una bse de datos.
+
