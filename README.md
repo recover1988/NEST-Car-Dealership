@@ -290,6 +290,34 @@ constructor(private readonly carsService: CarsService) {}
 
 Transforma la data recibida en requests, para asegurar un tipo, valor o instancia de un objeto.
 Ej: Transforma a numero, validacions, etc.
+Hay cuatro lugares donde se puede aplicar `pipes`:
+
+- @Param('id', ParseIntPipe, OtrosPipes)
+- Pipe a nivel de controlador -> @Get(), @Put(), @Delete(), @Patch()
+- Pipe a nivel global de controlador -> @Controller()
+- A nivel global de aplicacion -> en el main()
+
+```
+  @Post()
+  @UsePipes(ValidationPipe) <-- Pipe
+  createCar(@Body() createCarDto: CreateCarDto) {
+    return {
+      ok: true,
+      method: 'Post',
+      createCarDto,
+    };
+  }
+```
+
+Podemos usar el decorador `@UsePipes()` para usar pipe a nivel de controlador.
+
+```
+@Controller('cars')
+@UsePipes(ValidationPipe)  <-- Pipe
+export class CarsController {
+ --> Los controles del Crud <--
+}
+```
 
 ### Pipes integrados por defecto
 
@@ -337,6 +365,62 @@ Este pipe se puede instanciar y asi poder configurar algunas opciones como la ve
     return this.carsService.findOneById(id);
   }
 ```
+
+## ValidationPipe
+
+El `ValidationPipe` funciona con `DTO`(data trasnfer object), y las librerias de class-validator y class-trasnform.
+En el `DTO` colocamos las validaciones con los decoradores de las librerias que importamos, y asi se aplica.
+
+Para usar el validationpipe primero usamos un decorador en el nivel del controlador.
+
+```
+  @Post()
+  @UsePipes(ValidationPipe)
+  createCar(@Body() createCarDto: CreateCarDto) {
+    return {
+      ok: true,
+      method: 'Post',
+      createCarDto,
+    };
+  }
+```
+
+Y en `DTO` ponemos los decoradores del class-validator.
+
+```
+import { IsString } from "class-validator";
+
+export class CreateCarDto {
+    @IsString({ message: 'The brand most be a cool string' })
+    readonly brand: string;
+    @IsString()
+    readonly model: string;
+}
+```
+
+### Librerias externas utiles
+
+```
+nest add class-validator class-transformer
+npm i class-validator class-transformer <- este me funciono
+```
+
+Esta libreria nos crear algunos decoradores:
+
+- IsOptional
+- IsPositive
+- IsMongoId
+- IsArray
+- IsString
+- IsUUID
+- IsDecimal
+- IsDate
+- IsDateString
+- IsBoolean
+- IsEmail
+- IsUrl
+  Y hay muchos mas.
+  Para trabajar con esta libreria necesitamos el ValidationPipe.
 
 ## Excepcion Zone
 
@@ -403,6 +487,7 @@ Si el `car` o existe Nest nos envia la siguiente excepcion:
 ```
 
 ## DTO (Data Transfer Object)
+
 Es una clase que ayuda a que la informacion tenga las propiedades que necsitamos.
 Asegurar como fluye la data en la aplicacion.
 Las propiedades que espera y metodos, reglas de validacion automatica.
