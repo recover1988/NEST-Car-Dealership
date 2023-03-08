@@ -740,6 +740,7 @@ Genera un nuevo CRUD. Que nos simplifica la vida ademas en los DTO el update se 
 Es una abstraccion de como luce en tabla. El nombre de la clase es el nombre que va a tener la tabla cuando lo conectemos con una bse de datos.
 
 # Generar un Seed
+
 ```
 nest g res seed --no-spec
 
@@ -748,9 +749,15 @@ genera:
 ? Would you like to generate CRUD entry points? Yes
 CREATE src/seed/seed.controller.ts (883 bytes)
 CREATE src/seed/seed.module.ts (240 bytes)
-CREATE src/seed/seed.service.ts (607 bytes)      
+CREATE src/seed/seed.service.ts (607 bytes)
 CREATE src/seed/dto/create-seed.dto.ts (30 bytes)
 CREATE src/seed/dto/update-seed.dto.ts (169 bytes)
 CREATE src/seed/entities/seed.entity.ts (21 bytes)
 UPDATE src/app.module.ts (336 bytes)
 ```
+
+Esto crea una ruta `seed` que sirve para llenar la base de datos con nuestra inforamcion, asi los desarrolladores que usen nuestra app pueden tener una informacion con la cual trabajar.
+
+Este seed solo necesita una ruta GET en el controlador, ademas crearemos un servicio con la funcion para llenar la base de datos.
+
+En la carpeta data tendremos los datos que queremos llenar en la base de datos.
