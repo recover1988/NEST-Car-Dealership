@@ -22,6 +22,107 @@
   <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
   [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
+[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+
+## Installation
+
+```bash
+$ npm install
+```
+
+## Running the app
+
+```bash
+# development
+$ npm run start
+
+# watch mode
+$ npm run start:dev
+
+# production mode
+$ npm run start:prod
+```
+
+## Test
+
+```bash
+# unit tests
+$ npm run test
+
+# e2e tests
+$ npm run test:e2e
+
+# test coverage
+$ npm run test:cov
+```
+
+## Support
+
+Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+
+## Stay in touch
+
+- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
+- Website - [https://nestjs.com](https://nestjs.com/)
+- Twitter - [@nestframework](https://twitter.com/nestframework)
+
+## License
+
+Nest is [MIT licensed](LICENSE).
+
+## Comandos del CLI
+
+| Name        | Alias | Description                                                                                         |
+| ----------- | :---: | --------------------------------------------------------------------------------------------------- |
+| app         |       | Generate a new application within a monorepo (converting to monorepo if it's a standard structure). |
+| library     |  lib  | Generate a new library within a monorepo (converting to monorepo if it's a standard structure).     |
+| class       |  cl   | Generate a new class.                                                                               |
+| controller  |  co   | Generate a controller declaration.                                                                  |
+| decorator   |   d   | Generate a custom decorator.                                                                        |
+| filter      |   f   | Generate a filter declaration.                                                                      |
+| gateway     |  ga   | Generate a gateway declaration.                                                                     |
+| guard       |  gu   | Generate a guard declaration.                                                                       |
+| interface   |  itf  | Generate an interface.                                                                              |
+| interceptor |  itc  | Generate an interceptor declaration.                                                                |
+| middleware  |  mi   | Generate a middleware declaration.                                                                  |
+| module      |  mo   | Generate a module declaration.                                                                      |
+| pipe        |  pi   | Generate a pipe declaration.                                                                        |
+| provider    |  pr   | Generate a provider declaration.                                                                    |
+| resolver    |   r   | Generate a resolver declaration.                                                                    |
+| resource    |  res  | Generate a new CRUD resource. See the CRUD (resource) generator for more details.                   |
+| service     |   s   | Generate a service declaration.                                                                     |
+
+Options
+| Option |Description|
+|----------|-------|
+| --dry-run | Reports changes that would be made, but does not change the filesystem. |
+| | Alias: -d |
+| --project | [project] Project that element should be added to. |
+| | Alias: -p |
+| --flat | Do not generate a folder for the element. |
+| --collection [collectionName] | Specify schematics collection. Use package name of installed npm package containing schematic. |
+| | Alias: -c |
+| --spec | Enforce spec files generation (default) |
+| --no-spec | Disable spec files generation |
+
+## Estructura de modulo recomendada
+
+```
+/src
+    |_/common
+             |_ /decorators
+             |_ /dtos
+             |_ /filters
+             |_ /guards
+             |_ /interceptors
+             |_ /middleware
+             |_ /pipes
+             |_ common.controller.ts
+             |_ common.module.ts
+             |_ common.service.ts
+
+```
+
 ## Quitar errores de prettier
 
 ```
@@ -286,6 +387,70 @@ Para inyecta el servicio en el controlador debemos declararlo en el constructor:
 constructor(private readonly carsService: CarsService) {}
 ```
 
+## Excepcion Zone
+
+Nest controlla la excepciones automaticamente para que no se rompa.
+Si podemos el siguiente codigo:
+
+```
+  @Get(':id')
+  getCarById(@Param('id', ParseIntPipe) id: number) {
+    console.log(id);
+    throw new Error('Auxilio');
+  }
+```
+
+Nest maneja la excepcion de la siguiente forma:
+
+```
+{
+  "statusCode": 500,
+  "message": "Internal server error"
+}
+```
+
+Evitando que la app se rompa.
+
+## Exception Filters
+
+Maneja los errores de codigo en mensajes de respuesta http. Usualmente Nest ya incluye todos los casos de uso comunes, pero se pueden expandir basado en las necesidades.
+Estos son los mas usados pero hay más.
+
+```
+BadRequestException
+NotFoundException
+RequestTimeoutException
+PayloadTooLargeException
+UnauthorizedException
+ForbiddenException
+GoneException
+InternalServerErrorException
+```
+
+Para usarlo en el servicio agregamos la siguiente validacion:
+
+```
+  public findOneById(id: number) {
+    const car = this.cars.find((car) => car.id === id);
+
+    if (!car) {
+      throw new NotFoundException(`Car with id ${id} no found`);
+    }
+    return car;
+  }
+```
+
+Podemos personalizar el mensaje enviadolo si lo enviamos como un parametro.
+Si el `car` o existe Nest nos envia la siguiente excepcion:
+
+```
+{
+  "statusCode": 404,
+  "message": "Car with id 4 no found",
+  "error": "Not Found"
+}
+```
+
 ## Pipes
 
 Transforma la data recibida en requests, para asegurar un tipo, valor o instancia de un objeto.
@@ -398,6 +563,22 @@ export class CreateCarDto {
 }
 ```
 
+Podemos poner mas validacions a la data
+
+```
+import { IsString, MinLength } from "class-validator";
+
+export class CreateCarDto {
+    @IsString({ message: 'The brand most be a cool string' })
+    readonly brand: string;
+    @IsString()
+    @MinLength(3)
+    readonly model: string;
+}
+```
+
+Aca se agrega el decorador `@MinLength(3)` que indica que el valor minimo de letras debe ser de 3.
+
 ### Librerias externas utiles
 
 ```
@@ -422,70 +603,6 @@ Esta libreria nos crear algunos decoradores:
   Y hay muchos mas.
   Para trabajar con esta libreria necesitamos el ValidationPipe.
 
-## Excepcion Zone
-
-Nest controlla la excepciones automaticamente para que no se rompa.
-Si podemos el siguiente codigo:
-
-```
-  @Get(':id')
-  getCarById(@Param('id', ParseIntPipe) id: number) {
-    console.log(id);
-    throw new Error('Auxilio');
-  }
-```
-
-Nest maneja la excepcion de la siguiente forma:
-
-```
-{
-  "statusCode": 500,
-  "message": "Internal server error"
-}
-```
-
-Evitando que la app se rompa.
-
-## Exception Filters
-
-Maneja los errores de codigo en mensajes de respuesta http. Usualmente Nest ya incluye todos los casos de uso comunes, pero se pueden expandir basado en las necesidades.
-Estos son los mas usados pero hay más.
-
-```
-BadRequestException
-NotFoundException
-RequestTimeoutException
-PayloadTooLargeException
-UnauthorizedException
-ForbiddenException
-GoneException
-InternalServerErrorException
-```
-
-Para usarlo en el servicio agregamos la siguiente validacion:
-
-```
-  public findOneById(id: number) {
-    const car = this.cars.find((car) => car.id === id);
-
-    if (!car) {
-      throw new NotFoundException(`Car with id ${id} no found`);
-    }
-    return car;
-  }
-```
-
-Podemos personalizar el mensaje enviadolo si lo enviamos como un parametro.
-Si el `car` o existe Nest nos envia la siguiente excepcion:
-
-```
-{
-  "statusCode": 404,
-  "message": "Car with id 4 no found",
-  "error": "Not Found"
-}
-```
-
 ## DTO (Data Transfer Object)
 
 Es una clase que ayuda a que la informacion tenga las propiedades que necsitamos.
@@ -493,105 +610,39 @@ Asegurar como fluye la data en la aplicacion.
 Las propiedades que espera y metodos, reglas de validacion automatica.
 Crear una clase y es como esperamos que la data se mueva en la aplicacion.
 
-## Comandos del CLI
+# Validation Pipe a nivel Global
 
-| Name        | Alias | Description                                                                                         |
-| ----------- | :---: | --------------------------------------------------------------------------------------------------- |
-| app         |       | Generate a new application within a monorepo (converting to monorepo if it's a standard structure). |
-| library     |  lib  | Generate a new library within a monorepo (converting to monorepo if it's a standard structure).     |
-| class       |  cl   | Generate a new class.                                                                               |
-| controller  |  co   | Generate a controller declaration.                                                                  |
-| decorator   |   d   | Generate a custom decorator.                                                                        |
-| filter      |   f   | Generate a filter declaration.                                                                      |
-| gateway     |  ga   | Generate a gateway declaration.                                                                     |
-| guard       |  gu   | Generate a guard declaration.                                                                       |
-| interface   |  itf  | Generate an interface.                                                                              |
-| interceptor |  itc  | Generate an interceptor declaration.                                                                |
-| middleware  |  mi   | Generate a middleware declaration.                                                                  |
-| module      |  mo   | Generate a module declaration.                                                                      |
-| pipe        |  pi   | Generate a pipe declaration.                                                                        |
-| provider    |  pr   | Generate a provider declaration.                                                                    |
-| resolver    |   r   | Generate a resolver declaration.                                                                    |
-| resource    |  res  | Generate a new CRUD resource. See the CRUD (resource) generator for more details.                   |
-| service     |   s   | Generate a service declaration.                                                                     |
-
-Options
-| Option |Description|
-|----------|-------|
-| --dry-run | Reports changes that would be made, but does not change the filesystem. |
-| | Alias: -d |
-| --project | [project] Project that element should be added to. |
-| | Alias: -p |
-| --flat | Do not generate a folder for the element. |
-| --collection [collectionName] | Specify schematics collection. Use package name of installed npm package containing schematic. |
-| | Alias: -c |
-| --spec | Enforce spec files generation (default) |
-| --no-spec | Disable spec files generation |
-
-## Estructura de modulo recomendada
+En la funcion del `main.ts` escribimos el siguient codigo:
 
 ```
-/src
-    |_/common
-             |_ /decorators
-             |_ /dtos
-             |_ /filters
-             |_ /guards
-             |_ /interceptors
-             |_ /middleware
-             |_ /pipes
-             |_ common.controller.ts
-             |_ common.module.ts
-             |_ common.service.ts
+import { NestFactory } from '@nestjs/core';
+import { AppModule } from './app.module';
+import { ValidationPipe } from '@nestjs/common';
+
+async function bootstrap() {
+  const app = await NestFactory.create(AppModule);
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true,
+      forbidNonWhitelisted: true,
+    }),
+  );
+  await app.listen(3000);
+}
+bootstrap();
 
 ```
 
-## Description
+Dentro del app.useGlobalPipes podemos poner tantos pipes como queramos.
+La opcion `whitelist: true` remueve los datos que no esten en el `DTO`.
+La opcion `forbidNonWhitelisted: true` muesta un error si se envian datos que no estan en el `DTO` como:
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
-
-## Installation
-
-```bash
-$ npm install
 ```
-
-## Running the app
-
-```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+{
+  "statusCode": 400,
+  "message": [
+    "property banana should not exist"
+  ],
+  "error": "Bad Request"
+}
 ```
-
-## Test
-
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
-```
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
